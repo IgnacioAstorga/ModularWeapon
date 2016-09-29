@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System;
 
-[Serializable]
-public class WeaponModule {
+public class WeaponModule : MonoBehaviour {
 
 	public WeaponSection WeaponSection { get; set; }
 

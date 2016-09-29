@@ -4,31 +4,26 @@ using System.Collections.Generic;
 public class Weapon : MonoBehaviour {
 
 	public int SectionCount { get { return sections.Length; } }
-
-	public WeaponSection[] sections;
-	public Transform firePoint;
-
 	public List<WeaponProjectile> Projectiles { get; set; }
 
-	void Awake() {
-		foreach (WeaponSection section in sections) {
-			section.Weapon = this;
-			section.Awake();
-		}
-	}
+	public WeaponSection[] sections;
+	public Transform[] firePoints;
 
-	void Start() {
+	private int _nextFirePoint;
+
+	void Awake() {
 		foreach (WeaponSection section in sections)
-			section.Start();
+			section.AssignWeapon(this);
+
+		_nextFirePoint = 0;
 	}
 
 	void Update() {
 		ReadInput();
-		UpdateSections();
 	}
 
 	private void ReadInput() {
-		if (Input.GetButton("Fire"))
+		if (Input.GetButton("Fire1"))
 			Fire();
 	}
 
@@ -43,12 +38,9 @@ public class Weapon : MonoBehaviour {
 		projectile.Weapon = this;
 	}
 
-	private void UpdateSections() {
-		foreach (WeaponSection section in sections)
-			section.Update();
-	}
-
 	public Transform GetFirePoint() {
-		return firePoint;
+		if (_nextFirePoint >= firePoints.Length)
+			_nextFirePoint = 0;
+		return firePoints[_nextFirePoint++];
 	}
 }
