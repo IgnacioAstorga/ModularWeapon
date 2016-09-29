@@ -1,0 +1,4 @@
+﻿interface SimulateComponent {
+
+	void Simulate();
+}
