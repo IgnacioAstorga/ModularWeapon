@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
+
+[Serializable]
+public class TransformSequence : Sequence<Transform> { }
 
 public class Weapon : MonoBehaviour {
 
@@ -7,15 +11,16 @@ public class Weapon : MonoBehaviour {
 	public List<WeaponProjectile> Projectiles { get; set; }
 
 	public WeaponSection[] sections;
-	public Transform[] firePoints;
-
-	private int _nextFirePoint;
+	public TransformSequence firePoints;
 
 	void Awake() {
+		Projectiles = new List<WeaponProjectile>();
 		foreach (WeaponSection section in sections)
 			section.AssignWeapon(this);
+	}
 
-		_nextFirePoint = 0;
+	void Start() {
+		firePoints.MoveNext();
 	}
 
 	void Update() {
@@ -25,11 +30,23 @@ public class Weapon : MonoBehaviour {
 	private void ReadInput() {
 		if (Input.GetButton("Fire1"))
 			Fire();
+		else
+			Release();
 	}
 
 	public void Fire() {
-		WeaponProjectile[] projectilesFired = sections[0].transitionModule.Fire();
-		foreach (WeaponProjectile projectile in projectilesFired)
+		RegisterProjectile(sections[0].transitionModule.PressFire());
+	}
+
+	public void Release() {
+		RegisterProjectile(sections[0].transitionModule.ReleaseFire());
+	}
+
+	private void RegisterProjectile(IEnumerable<WeaponProjectile> projectiles) {
+		if (projectiles == null)
+			return;
+
+		foreach (WeaponProjectile projectile in projectiles)
 			RegisterProjectile(projectile);
 	}
 
@@ -39,8 +56,8 @@ public class Weapon : MonoBehaviour {
 	}
 
 	public Transform GetFirePoint() {
-		if (_nextFirePoint >= firePoints.Length)
-			_nextFirePoint = 0;
-		return firePoints[_nextFirePoint++];
+		Transform point = firePoints.Current;
+		firePoints.MoveNext();
+		return point;
 	}
 }

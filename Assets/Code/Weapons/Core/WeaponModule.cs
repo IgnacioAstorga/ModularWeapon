@@ -1,55 +1,50 @@
 ﻿using UnityEngine;
 
-public class WeaponModule : MonoBehaviour {
+public abstract class WeaponModule : MonoBehaviour {
 
 	public WeaponSection WeaponSection { get; set; }
 
-	//------------- General -------------
+	protected bool IsPressed { get; set; }
+	protected float TimePressed { get; set; }
 
-	public void Start() {
-		// Do nothing
-	}
+	public WeaponProjectile projectilePrefab;
 
-	public void Update() {
-		UpdateTimers();
-	}
-
-	private void UpdateTimers() {
-		_timeSinceLastFire += Time.deltaTime;
-	}
-
-	//------------- Transition -------------
-
-	public float fireRate;
-
-	private float _timeSinceLastFire;
-
-	public WeaponProjectile[] Fire() {
-		float fireDelay = 1f / fireRate;
-		WeaponProjectile[] projectiles = new WeaponProjectile[(int)(_timeSinceLastFire / fireDelay)];
-		int i = 0;
-		while (_timeSinceLastFire >= fireDelay) {
-			_timeSinceLastFire -= fireDelay;
-			WeaponProjectile projectile = Shoot(_timeSinceLastFire);
-			projectiles[i] = projectile;
-			i++;
+	public WeaponProjectile[] PressFire() {
+		if (IsPressed) {
+			TimePressed += Time.deltaTime;
+			return OnHoldFire();
 		}
-		return projectiles;
+		else {
+			IsPressed = true;
+			TimePressed = 0;
+			return OnPressFire();
+		}
 	}
 
-	public WeaponProjectile Shoot(float elapsedTime = 0f) {
+	public WeaponProjectile[] ReleaseFire() {
+		if (!IsPressed)
+			return null;
+
+		IsPressed = false;
+		TimePressed = 0;
+		return OnReleaseFire();
+	}
+
+	public abstract WeaponProjectile[] OnPressFire();
+
+	public abstract WeaponProjectile[] OnHoldFire();
+
+	public abstract WeaponProjectile[] OnReleaseFire();
+
+	public WeaponProjectile FireProjectile(float elapsedTime = 0f) {
 		WeaponProjectile projectile = WeaponSection.projectileModule.CreateProjectile();
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);
 		return projectile;
 	}
 
-	//------------- Projectile -------------
-
-	public WeaponProjectile projectilePrefab;
-
 	private WeaponProjectile CreateProjectile() {
 		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
-		return (WeaponProjectile) GameObject.Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+		return (WeaponProjectile) Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
 	}
 }
