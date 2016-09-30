@@ -4,13 +4,10 @@
 [RequireComponent(typeof(Rigidbody))]
 public class InitialVelocity : MonoBehaviour, SimulateComponent {
 
-	public Vector3 Velocity {
-		get { return _rigidbody.velocity; }
-		set { _rigidbody.velocity = value; }
-	}
-
 	public Vector3 initialVelocity = Vector3.forward;
-	public float dispersion = 0;
+	public Vector3 dispersion = Vector3.zero;
+
+	private Vector3 _velocity;
 
 	private WeaponProjectile _projectile;
 	private Rigidbody _rigidbody;
@@ -31,21 +28,21 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 	}
 
 	private Vector3 CalculateVelocity() {
-		if (Velocity == Vector3.zero) {
-			Velocity = _transform.TransformDirection(initialVelocity);
-			Velocity *= _projectile.Modifiers.speedMultiplier;
+		if (_velocity == Vector3.zero) {
+			_velocity = _transform.TransformDirection(initialVelocity);
+			_velocity *= _projectile.Modifiers.speedMultiplier;
 
 			Quaternion weaponDeviation = Quaternion.FromToRotation(Vector3.forward, _projectile.Modifiers.baseDirection);
-			Velocity = weaponDeviation * Velocity;
+			_velocity = weaponDeviation * _velocity;
 
-			Vector3 dispersion = _projectile.Modifiers.additionalDispersion;
+			Vector3 dispersion = this.dispersion + _projectile.Modifiers.additionalDispersion;
 			dispersion.x = Random.Range(-dispersion.x, dispersion.x);
 			dispersion.y = Random.Range(-dispersion.y, dispersion.y);
 			dispersion.z = Random.Range(-dispersion.z, dispersion.z);
 			Quaternion dispersionDeviation = Quaternion.Euler(dispersion);
-			Velocity = dispersionDeviation * Velocity;
+			_velocity = dispersionDeviation * _velocity;
 		}
 
-		return Velocity;
+		return _velocity;
 	}
 }
