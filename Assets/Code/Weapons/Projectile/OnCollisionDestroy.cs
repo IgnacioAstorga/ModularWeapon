@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(WeaponProjectile))]
 public class OnCollisionDestroy : MonoBehaviour {
 
 	public LayerMask collisionLayer;
