@@ -7,6 +7,7 @@ public abstract class WeaponModule : MonoBehaviour {
 	protected bool IsPressed { get; set; }
 	protected float TimePressed { get; set; }
 
+	public WeaponModuleModifiers transitionModifiers;
 	public WeaponProjectile projectilePrefab;
 
 	public WeaponProjectile[] PressFire() {
@@ -37,14 +38,15 @@ public abstract class WeaponModule : MonoBehaviour {
 	public abstract WeaponProjectile[] OnReleaseFire();
 
 	public WeaponProjectile FireProjectile(float elapsedTime = 0f) {
-		WeaponProjectile projectile = WeaponSection.projectileModule.CreateProjectile();
+		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
+		WeaponProjectile projectile = WeaponSection.projectileModule.CreateProjectile(firePoint.position, firePoint.rotation);
+		projectile.Modifiers = transitionModifiers;
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);
 		return projectile;
 	}
 
-	private WeaponProjectile CreateProjectile() {
-		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
-		return (WeaponProjectile) Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+	private WeaponProjectile CreateProjectile(Vector3 position, Quaternion rotation) {
+		return (WeaponProjectile) Instantiate(projectilePrefab, position, rotation);
 	}
 }

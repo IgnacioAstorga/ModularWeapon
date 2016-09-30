@@ -30,8 +30,7 @@ public class CharacterController3D : MonoBehaviour {
 	}
 
 	void Start() {
-		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
+		ShowCursor(false);
 	}
 
 	void OnEnable() {
@@ -44,6 +43,7 @@ public class CharacterController3D : MonoBehaviour {
 	void Update() {
 		ReadInput();
 		UpdateVelocity();
+		HideCursor();
 	}
 
 	void FixedUpdate() {
@@ -131,5 +131,21 @@ public class CharacterController3D : MonoBehaviour {
 
 		Vector3 bounce = bounceFactor * Vector3.Project(Velocity, hit.normal);
 		Velocity = Vector3.ProjectOnPlane(Velocity, hit.normal) - bounce;
+	}
+
+	private void HideCursor() {
+		if (Input.GetButtonDown("Toggle Cursor"))
+			ShowCursor(!Cursor.visible);
+	}
+
+	private void ShowCursor(bool show) {
+		if (show) {
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
+		else {
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
 	}
 }

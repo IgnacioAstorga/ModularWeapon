@@ -1,4 +1,4 @@
 ﻿interface SimulateComponent {
 
-	void Simulate();
+	void Simulate(float timeToSimulate);
 }

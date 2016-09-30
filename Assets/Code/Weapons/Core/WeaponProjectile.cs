@@ -1,27 +1,27 @@
 ﻿using UnityEngine;
 
-public class WeaponProjectile : MonoBehaviour {
-	
+public class WeaponProjectile : MonoBehaviour, SimulateComponent {
+
 	public Weapon Weapon { get; set; }
-
-	private int _sectionIndex;
-
+	public WeaponModuleModifiers Modifiers { get; set; }
+	
 	private float _timeToSimulate;
 
-	void Awake() {
-		_sectionIndex = 0;
+	private SimulateComponent[] _simulateComponents;
+
+	void Start() {
+		_simulateComponents = GetComponents<SimulateComponent>();
 	}
 
 	void FixedUpdate() {
-		SimulateComponent[] simulateComponents = GetComponents<SimulateComponent>();
-		while (_timeToSimulate > 0f) {
-			_timeToSimulate -= Time.deltaTime;
-			foreach (SimulateComponent simulateComponent in simulateComponents)
-				simulateComponent.Simulate();
+		if (_timeToSimulate > 0f) {
+			foreach (SimulateComponent simulateComponent in _simulateComponents)
+				simulateComponent.Simulate(_timeToSimulate);
+			_timeToSimulate = 0f;
 		}
 	}
 
-	public void Simulate(float time) {
-		_timeToSimulate = time;
+	public void Simulate(float timeToSimulate) {
+		_timeToSimulate = timeToSimulate;
 	}
 }
