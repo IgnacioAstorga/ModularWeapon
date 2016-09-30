@@ -54,21 +54,22 @@ public class CharacterController3D : MonoBehaviour {
 
 	private void ReadInput() {
 		// Rotation
-		float mouseX = Input.GetAxis("Mouse X");
-		float mouseY = Input.GetAxis("Mouse Y");
+		if (!Cursor.visible) {
+			float mouseX = Input.GetAxis("Mouse X");
+			float mouseY = Input.GetAxis("Mouse Y");
 
-		//	-> Horizontal
-		Vector3 angles = _transform.localEulerAngles;
-		angles.y += mouseX * mouseSensitivity * Time.deltaTime;
-		_transform.localEulerAngles = angles;
+			//	-> Horizontal
+			Vector3 angles = _transform.localEulerAngles;
+			angles.y += mouseX * mouseSensitivity * Time.deltaTime;
+			_transform.localEulerAngles = angles;
 
-		//	-> Vertical
-		_headAngle += mouseY * mouseSensitivity * Time.deltaTime;
-		_headAngle = Mathf.Clamp(_headAngle, -maxViewAngle, maxViewAngle);
-		angles = head.localEulerAngles;
-		angles.x = -_headAngle;
-		head.localEulerAngles = angles;
-
+			//	-> Vertical
+			_headAngle += mouseY * mouseSensitivity * Time.deltaTime;
+			_headAngle = Mathf.Clamp(_headAngle, -maxViewAngle, maxViewAngle);
+			angles = head.localEulerAngles;
+			angles.x = -_headAngle;
+			head.localEulerAngles = angles;
+		}
 
 		// Movement
 		float horizontal = Input.GetAxis("Horizontal");
