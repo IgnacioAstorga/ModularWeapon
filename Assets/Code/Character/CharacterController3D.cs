@@ -29,10 +29,6 @@ public class CharacterController3D : MonoBehaviour {
 		_transform = transform;
 	}
 
-	void Start() {
-		ShowCursor(false);
-	}
-
 	void OnEnable() {
 		Grounded = false;
 		Jumping = false;
@@ -43,7 +39,6 @@ public class CharacterController3D : MonoBehaviour {
 	void Update() {
 		ReadInput();
 		UpdateVelocity();
-		HideCursor();
 	}
 
 	void FixedUpdate() {
@@ -54,7 +49,7 @@ public class CharacterController3D : MonoBehaviour {
 
 	private void ReadInput() {
 		// Rotation
-		if (!Cursor.visible) {
+		if (GameController.cursorController.Hidden) {
 			float mouseX = Input.GetAxis("Mouse X");
 			float mouseY = Input.GetAxis("Mouse Y");
 
@@ -132,21 +127,5 @@ public class CharacterController3D : MonoBehaviour {
 
 		Vector3 bounce = bounceFactor * Vector3.Project(Velocity, hit.normal);
 		Velocity = Vector3.ProjectOnPlane(Velocity, hit.normal) - bounce;
-	}
-
-	private void HideCursor() {
-		if (Input.GetButtonDown("Toggle Cursor"))
-			ShowCursor(!Cursor.visible);
-	}
-
-	private void ShowCursor(bool show) {
-		if (show) {
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
-		}
-		else {
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
-		}
 	}
 }

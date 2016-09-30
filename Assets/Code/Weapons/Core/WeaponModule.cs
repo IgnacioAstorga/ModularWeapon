@@ -39,7 +39,7 @@ public abstract class WeaponModule : MonoBehaviour {
 
 	public WeaponProjectile FireProjectile(float elapsedTime = 0f) {
 		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
-		WeaponProjectile projectile = WeaponSection.projectileModule.CreateProjectile(firePoint.position, firePoint.rotation);
+		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(firePoint.position, firePoint.rotation);
 		projectile.Modifiers = transitionModifiers;
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);

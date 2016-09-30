@@ -6,31 +6,52 @@ public class WeaponSection {
 
 	public Weapon Weapon { get; set; }
 	
-	public WeaponModule transitionModule;
-	public WeaponModule projectileModule;
-	public WeaponModule[] upgradeModules;
+	public WeaponModule TransitionModule { get; set; }
+	public WeaponModule ProjectileModule { get; set; }
+	public WeaponModule[] UpgradeModules { get; set; }
+
+	[SerializeField]
+	private WeaponModule transitionModule;
+	[SerializeField]
+	private WeaponModule projectileModule;
+	[SerializeField]
+	private WeaponModule[] upgradeModules;
 
 	public void AssignWeapon(Weapon weapon) {
 		Weapon = weapon;
-
-		InstantiateModules();
-
-		projectileModule.WeaponSection = this;
-		transitionModule.WeaponSection = this;
-		foreach (WeaponModule module in upgradeModules)
-			module.WeaponSection = this;
+		SetTransitionModule(transitionModule);
+		SetProjectileModule(projectileModule);
+		SetUpgradeModules(upgradeModules);
 	}
-	
-	private void InstantiateModules() {
-		transitionModule = GameObject.Instantiate<WeaponModule>(transitionModule);
-		transitionModule.transform.SetParent(Weapon.transform, false);
 
-		projectileModule = GameObject.Instantiate<WeaponModule>(projectileModule);
-		projectileModule.transform.SetParent(Weapon.transform, false);
+	public void SetTransitionModule(WeaponModule modulePrefab) {
+		if (TransitionModule != null)
+			GameObject.Destroy(TransitionModule);
 
-		for (int i = 0; i < upgradeModules.Length; i++) {
-			upgradeModules[i] = GameObject.Instantiate<WeaponModule>(upgradeModules[i]);
-			upgradeModules[i].transform.SetParent(Weapon.transform, false);
+		TransitionModule = GameObject.Instantiate<WeaponModule>(modulePrefab);
+		TransitionModule.transform.SetParent(Weapon.ModuleParent, false);
+		TransitionModule.WeaponSection = this;
+	}
+
+	public void SetProjectileModule(WeaponModule modulePrefab) {
+		if (ProjectileModule != null)
+			GameObject.Destroy(ProjectileModule);
+
+		ProjectileModule = GameObject.Instantiate<WeaponModule>(modulePrefab);
+		ProjectileModule.transform.SetParent(Weapon.ModuleParent, false);
+		ProjectileModule.WeaponSection = this;
+	}
+
+	public void SetUpgradeModules(WeaponModule[] modulePrefabs) {
+		if (UpgradeModules != null)
+			foreach (WeaponModule upgradeModule in UpgradeModules)
+				GameObject.Destroy(upgradeModule);
+
+		UpgradeModules = new WeaponModule[modulePrefabs.Length];
+		for (int i = 0; i < modulePrefabs.Length; i++) {
+			UpgradeModules[i] = GameObject.Instantiate<WeaponModule>(modulePrefabs[i]);
+			UpgradeModules[i].transform.SetParent(Weapon.ModuleParent, false);
+			UpgradeModules[i].WeaponSection = this;
 		}
 	}
 }

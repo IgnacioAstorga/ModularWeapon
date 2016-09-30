@@ -7,13 +7,17 @@ public class AutomaticWeaponModule : WeaponModule {
 
 	private float _timeForNextShoot;
 
+	void Update() {
+		_timeForNextShoot -= Time.deltaTime;
+	}
+
 	public override WeaponProjectile[] OnPressFire() {
-		_timeForNextShoot = 0;
+		if (_timeForNextShoot <= 0)
+			_timeForNextShoot = 0;
 		return AutomaticFire();
 	}
 
 	public override WeaponProjectile[] OnHoldFire() {
-		_timeForNextShoot -= Time.deltaTime;
 		return AutomaticFire();
 	}
 
