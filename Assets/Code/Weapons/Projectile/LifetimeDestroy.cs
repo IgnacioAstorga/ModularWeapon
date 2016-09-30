@@ -19,8 +19,16 @@ public class LifetimeDestroy : MonoBehaviour, SimulateComponent {
 
 	void Update() {
 		_lifeTime += Time.deltaTime;
-		if (_lifeTime >= duration * _projectile.Modifiers.durationMultiplier)
+		if (_lifeTime >= GetTotalDuration())
 			Destroy(gameObject);
+	}
+
+	public float GetTotalDuration() {
+		return duration * _projectile.Modifiers.durationMultiplier;
+	}
+
+	public float GetRemainingTime() {
+		return GetTotalDuration() - _lifeTime;
 	}
 
 	public void Simulate(float timeToSimulate) {

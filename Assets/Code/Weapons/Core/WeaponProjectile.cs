@@ -9,7 +9,7 @@ public class WeaponProjectile : MonoBehaviour, SimulateComponent {
 
 	private SimulateComponent[] _simulateComponents;
 
-	void Start() {
+	void Awake() {
 		_simulateComponents = GetComponents<SimulateComponent>();
 	}
 
