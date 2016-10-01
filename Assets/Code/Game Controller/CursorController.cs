@@ -18,7 +18,7 @@ public class CursorController : MonoBehaviour {
 	}
 
 	public void ToggleCursor() {
-		ShowCursor(!Hidden);
+		ShowCursor(Hidden);
 	}
 
 	public void ShowCursor(bool show) {
