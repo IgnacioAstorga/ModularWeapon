@@ -44,4 +44,9 @@ public class WeaponSectionGUI : MonoBehaviour {
 	public void SetSelectedProjectileModule(int index) {
 		_section.SetProjectileModule(_availableModules[index]);
 	}
+
+	void OnDisable() {
+		transitionDropdown.Hide();
+		projectileDropdown.Hide();
+	}
 }
