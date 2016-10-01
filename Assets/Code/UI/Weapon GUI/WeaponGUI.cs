@@ -10,15 +10,15 @@ public class WeaponGUI : MonoBehaviour {
 	private Transform[] _sectionGUIs;
 
 	void OnEnable() {
-		if (_sectionGUIs == null) {
-			// First call when the game begins
-			_sectionGUIs = new Transform[weapon.SectionCount];
+		if (weapon.sections[0].Weapon == null)
 			return;
+
+		if (_sectionGUIs != null) {
+			foreach (Transform section in _sectionGUIs)
+				Destroy(section.gameObject);
 		}
 
-		foreach (Transform section in _sectionGUIs)
-				Destroy(section);
-
+		_sectionGUIs = new Transform[weapon.SectionCount];
 		for (int i = 0; i < weapon.SectionCount; i++) {
 			CreateSectionGUI(weapon.sections[i], i);
 		}

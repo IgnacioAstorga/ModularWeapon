@@ -19,19 +19,21 @@ public class WeaponSectionGUI : MonoBehaviour {
 		transitionDropdown.ClearOptions();
 		int selectedIndex = 0;
 		for (int i = 0; i < _availableModules.Length; i++) {
-			if (_availableModules[i].GetModuleName() == _section.TransitionModule.GetModuleName())
+			if (_availableModules[i].GetModuleName().Equals(_section.TransitionModule.GetModuleName()))
 				selectedIndex = i;
 			transitionDropdown.options.Add(new Dropdown.OptionData(_availableModules[i].GetModuleName()));
 		}
+		transitionDropdown.value = -1;
 		transitionDropdown.value = selectedIndex;
 
 		projectileDropdown.ClearOptions();
 		selectedIndex = 0;
 		for (int i = 0; i < _availableModules.Length; i++) {
-			if (_availableModules[i].GetType() == _section.ProjectileModule.GetType())
+			if (_availableModules[i].GetModuleName().Equals(_section.ProjectileModule.GetModuleName()))
 				selectedIndex = i;
 			projectileDropdown.options.Add(new Dropdown.OptionData(_availableModules[i].GetModuleName()));
 		}
+		projectileDropdown.value = -1;
 		projectileDropdown.value = selectedIndex;
 	}
 
