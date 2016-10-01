@@ -7,8 +7,13 @@ public abstract class WeaponModule : MonoBehaviour {
 	protected bool IsPressed { get; set; }
 	protected float TimePressed { get; set; }
 
+	public string moduleName;
 	public WeaponModuleModifiers transitionModifiers;
 	public WeaponProjectile projectilePrefab;
+
+	public string GetModuleName() {
+		return moduleName;
+	}
 
 	public WeaponProjectile[] PressFire() {
 		if (IsPressed) {

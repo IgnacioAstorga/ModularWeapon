@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour {
 	}
 
 	private void ReadInput() {
-		if (Input.GetButton("Fire1"))
+		if (PlayerInput.Fire1)
 			Fire();
 		else
 			Release();

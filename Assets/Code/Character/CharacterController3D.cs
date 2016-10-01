@@ -50,8 +50,8 @@ public class CharacterController3D : MonoBehaviour {
 	private void ReadInput() {
 		// Rotation
 		if (GameController.cursorController.Hidden) {
-			float mouseX = Input.GetAxis("Mouse X");
-			float mouseY = Input.GetAxis("Mouse Y");
+			float mouseX = PlayerInput.MouseX;
+			float mouseY = PlayerInput.MouseY;
 
 			//	-> Horizontal
 			Vector3 angles = _transform.localEulerAngles;
@@ -67,19 +67,19 @@ public class CharacterController3D : MonoBehaviour {
 		}
 
 		// Movement
-		float horizontal = Input.GetAxis("Horizontal");
-		float vertical = Input.GetAxis("Vertical");
+		float horizontal = PlayerInput.Horizontal;
+		float vertical = PlayerInput.Vertical;
 
 		//	-> Input velocity
 		float speed = maxSpeed;
-		if (Grounded && Input.GetButton("Sprint"))
+		if (Grounded && PlayerInput.Sprint)
 			speed *= sprintFactor;
 		_inputVelocity = transform.forward * vertical * speed;
 		_inputVelocity += transform.right * horizontal * speed;
 		_inputVelocity = Vector3.ClampMagnitude(_inputVelocity, speed);
 
 		// Jump
-		if (Input.GetButtonDown("Jump") && Grounded)
+		if (PlayerInput.Jump && Grounded)
 			Jumping = true;
 	}
 

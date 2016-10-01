@@ -2,6 +2,10 @@
 
 public class UIController : MonoBehaviour {
 
+	void Start() {
+		Hide();
+	}
+
 	public void Show() {
 		gameObject.SetActive(true);
 	}

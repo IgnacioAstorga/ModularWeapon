@@ -10,10 +10,6 @@ public class PauseGame : MonoBehaviour {
 		GameController.pauseGame = this;
 	}
 
-	void Start() {
-		UIController.Hide();
-	}
-
 	void Update() {
 		if (Input.GetButtonDown("Pause"))
 			TogglePause();
