@@ -25,8 +25,8 @@ public class PlayerInput : MonoBehaviour{
 	private void ReadCharacterInput() {
 		Horizontal = Input.GetAxis("Horizontal");
 		Vertical = Input.GetAxis("Vertical");
-		Horizontal = Input.GetAxis("Mouse X");
-		Vertical = Input.GetAxis("Mouse Y");
+		MouseX = Input.GetAxis("Mouse X");
+		MouseY = Input.GetAxis("Mouse Y");
 		Jump = Input.GetButtonDown("Jump");
 		Sprint = Input.GetButton("Sprint");
 	}

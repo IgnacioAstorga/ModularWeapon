@@ -25,11 +25,13 @@ public class PauseGame : MonoBehaviour {
 			Time.timeScale = 0;
 			UIController.Show();
 			GameController.cursorController.ShowCursor(true);
+			PlayerInput.Disable();
 		}
 		else {
 			Time.timeScale = 1;
 			UIController.Hide();
 			GameController.cursorController.ShowCursor(false);
+			PlayerInput.Enable();
 		}
 	}
 }
