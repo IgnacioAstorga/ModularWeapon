@@ -46,6 +46,7 @@ public abstract class WeaponModule : MonoBehaviour {
 		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
 		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(firePoint.position, firePoint.rotation);
 		projectile.Modifiers = transitionModifiers;
+		projectile.NextSection = WeaponSection.NextSection;
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);
 		return projectile;
@@ -53,5 +54,9 @@ public abstract class WeaponModule : MonoBehaviour {
 
 	private WeaponProjectile CreateProjectile(Vector3 position, Quaternion rotation) {
 		return (WeaponProjectile) Instantiate(projectilePrefab, position, rotation);
+	}
+
+	public void StartTransition(WeaponProjectile projectile) {
+
 	}
 }

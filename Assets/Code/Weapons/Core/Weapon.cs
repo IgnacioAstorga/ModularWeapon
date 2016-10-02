@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour {
 
 	public CharacterController3D Character { get; private set; }
 	public int SectionCount { get { return sections.Length; } }
-	public List<WeaponProjectile> Projectiles { get; set; }
+	public List<WeaponProjectile> Projectiles { get; private set; }
 	public Transform ModuleParent { get { return CreateModuleParent(); } }
 
 	public WeaponSection[] sections;
@@ -24,8 +24,12 @@ public class Weapon : MonoBehaviour {
 		_transform = transform;
 
 		Projectiles = new List<WeaponProjectile>();
-		foreach (WeaponSection section in sections)
-			section.AssignWeapon(this);
+		for (int i = 0; i < SectionCount; i++) {
+			if (i < SectionCount - 1)
+				sections[i].AssignWeapon(this, sections[i + 1]);
+			else
+				sections[i].AssignWeapon(this);
+		}
 	}
 
 	void Start() {

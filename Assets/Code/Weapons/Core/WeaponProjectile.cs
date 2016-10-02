@@ -4,10 +4,12 @@ public class WeaponProjectile : MonoBehaviour, SimulateComponent {
 
 	public Weapon Weapon { get; set; }
 	public WeaponModuleModifiers Modifiers { get; set; }
+	public WeaponSection NextSection { get; set; }
 
 	public float size = 1;
 
 	private float _timeToSimulate;
+	private bool _isQuitting;
 
 	private SimulateComponent[] _simulateComponents;
 	private Transform _transform;
@@ -35,5 +37,17 @@ public class WeaponProjectile : MonoBehaviour, SimulateComponent {
 
 	public float GetSize() {
 		return size * Modifiers.sizeMultiplier;
+	}
+
+	void OnApplicationQuit() {
+		_isQuitting = true;
+	}
+
+	void OnDestroy() {
+		if (_isQuitting)
+			return;
+
+		if (NextSection != null)
+			NextSection.TransitionModule.StartTransition(this);
 	}
 }

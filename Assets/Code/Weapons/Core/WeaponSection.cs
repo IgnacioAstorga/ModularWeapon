@@ -4,11 +4,12 @@ using System;
 [Serializable]
 public class WeaponSection {
 
-	public Weapon Weapon { get; set; }
+	public Weapon Weapon { get; private set; }
+	public WeaponSection NextSection { get; private set; }
 	
-	public WeaponModule TransitionModule { get; set; }
-	public WeaponModule ProjectileModule { get; set; }
-	public WeaponModule[] UpgradeModules { get; set; }
+	public WeaponModule TransitionModule { get; private set; }
+	public WeaponModule ProjectileModule { get; private set; }
+	public WeaponModule[] UpgradeModules { get; private set; }
 
 	[SerializeField]
 	private WeaponModule transitionModule;
@@ -17,8 +18,9 @@ public class WeaponSection {
 	[SerializeField]
 	private WeaponModule[] upgradeModules;
 
-	public void AssignWeapon(Weapon weapon) {
+	public void AssignWeapon(Weapon weapon, WeaponSection nextSection = null) {
 		Weapon = weapon;
+		NextSection = nextSection;
 		SetTransitionModule(transitionModule);
 		SetProjectileModule(projectileModule);
 		SetUpgradeModules(upgradeModules);
