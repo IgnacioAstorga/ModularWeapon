@@ -8,7 +8,6 @@ public class WeaponModule : MonoBehaviour {
 	protected float TimePressed { get; set; }
 
 	public string moduleName;
-	public WeaponModuleModifiers transitionModifiers;
 	public WeaponProjectile projectilePrefab;
 
 	private FireComponent _fireComponent;
@@ -18,6 +17,7 @@ public class WeaponModule : MonoBehaviour {
 		_fireComponent = GetComponent<FireComponent>();
 		if (_fireComponent == null)
 			Debug.LogError("ERROR: No Fire Component attached to the object!");
+		_transitionComponent = GetComponent<TransitionComponent>();
 		if (_transitionComponent == null)
 			Debug.LogError("ERROR: No Transition Component attached to the object!");
 	}
@@ -26,30 +26,30 @@ public class WeaponModule : MonoBehaviour {
 		return moduleName;
 	}
 
-	public WeaponProjectile[] PressFire() {
+	public void PressFire() {
 		if (IsPressed) {
 			TimePressed += Time.deltaTime;
-			return _fireComponent.OnHoldFire();
+			WeaponSection.Weapon.RegisterProjectile(_fireComponent.OnHoldFire());
 		}
 		else {
 			IsPressed = true;
 			TimePressed = 0;
-			return _fireComponent.OnPressFire();
+			WeaponSection.Weapon.RegisterProjectile(_fireComponent.OnPressFire());
 		}
 	}
 
-	public WeaponProjectile[] ReleaseFire() {
+	public void ReleaseFire() {
 		if (!IsPressed)
-			return null;
+			return;
 
 		IsPressed = false;
 		TimePressed = 0;
-		return _fireComponent.OnReleaseFire();
+		WeaponSection.Weapon.RegisterProjectile(_fireComponent.OnReleaseFire());
 	}
 
-	public WeaponProjectile FireProjectile(Vector3 position, Quaternion rotation, float elapsedTime = 0f) {
+	public WeaponProjectile FireProjectile(Vector3 position, Quaternion rotation, WeaponModuleModifiers modifiers, float elapsedTime = 0f) {
 		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(position, rotation);
-		projectile.Modifiers = transitionModifiers;
+		projectile.Modifiers = modifiers;
 		projectile.NextSection = WeaponSection.NextSection;
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);
@@ -61,6 +61,6 @@ public class WeaponModule : MonoBehaviour {
 	}
 
 	public void StartTransition(WeaponProjectile projectile) {
-		_transitionComponent.OnTransition(projectile);
+		WeaponSection.Weapon.RegisterProjectile(_transitionComponent.OnTransition(projectile));
 	}
 }

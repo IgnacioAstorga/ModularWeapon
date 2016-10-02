@@ -28,7 +28,7 @@ public class WeaponSection {
 
 	public void SetTransitionModule(WeaponModule modulePrefab) {
 		if (TransitionModule != null)
-			GameObject.Destroy(TransitionModule);
+			GameObject.Destroy(TransitionModule.gameObject);
 
 		TransitionModule = GameObject.Instantiate<WeaponModule>(modulePrefab);
 		TransitionModule.transform.SetParent(Weapon.ModuleParent, false);
@@ -37,7 +37,7 @@ public class WeaponSection {
 
 	public void SetProjectileModule(WeaponModule modulePrefab) {
 		if (ProjectileModule != null)
-			GameObject.Destroy(ProjectileModule);
+			GameObject.Destroy(ProjectileModule.gameObject);
 
 		ProjectileModule = GameObject.Instantiate<WeaponModule>(modulePrefab);
 		ProjectileModule.transform.SetParent(Weapon.ModuleParent, false);
@@ -47,7 +47,7 @@ public class WeaponSection {
 	public void SetUpgradeModules(WeaponModule[] modulePrefabs) {
 		if (UpgradeModules != null)
 			foreach (WeaponModule upgradeModule in UpgradeModules)
-				GameObject.Destroy(upgradeModule);
+				GameObject.Destroy(upgradeModule.gameObject);
 
 		UpgradeModules = new WeaponModule[modulePrefabs.Length];
 		for (int i = 0; i < modulePrefabs.Length; i++) {

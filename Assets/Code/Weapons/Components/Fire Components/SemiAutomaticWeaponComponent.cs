@@ -36,7 +36,7 @@ public class SemiAutomaticWeaponComponent : FireComponent {
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		for (int i = 0; i < numberOfProjetiles; i++) {
 			Transform firePoint = Module.WeaponSection.Weapon.GetFirePoint();
-			projectiles.Add(Module.FireProjectile(firePoint.position, firePoint.rotation));
+			projectiles.Add(Module.FireProjectile(firePoint.position, firePoint.rotation, fireModifiers));
 		}
 		return projectiles.ToArray();
 	}

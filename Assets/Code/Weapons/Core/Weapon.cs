@@ -48,11 +48,11 @@ public class Weapon : MonoBehaviour {
 	}
 
 	public void Fire() {
-		RegisterProjectile(sections[0].TransitionModule.PressFire());
+		sections[0].TransitionModule.PressFire();
 	}
 
 	public void Release() {
-		RegisterProjectile(sections[0].TransitionModule.ReleaseFire());
+		sections[0].TransitionModule.ReleaseFire();
 	}
 
 	public void ClearProjectiles() {
@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour {
 		Projectiles.Clear();
 	}
 
-	private void RegisterProjectile(IEnumerable<WeaponProjectile> projectiles) {
+	public void RegisterProjectile(IEnumerable<WeaponProjectile> projectiles) {
 		if (projectiles == null)
 			return;
 
@@ -69,7 +69,10 @@ public class Weapon : MonoBehaviour {
 			RegisterProjectile(projectile);
 	}
 
-	private void RegisterProjectile(WeaponProjectile projectile) {
+	public void RegisterProjectile(WeaponProjectile projectile) {
+		if (projectile == null)
+			return;
+
 		Projectiles.Add(projectile);
 		projectile.Weapon = this;
 	}
