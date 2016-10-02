@@ -1,0 +1,13 @@
+﻿using UnityEngine;
+
+[RequireComponent(typeof(WeaponModule))]
+public abstract class TransitionComponent : MonoBehaviour {
+
+	protected WeaponModule Module { get; private set; }
+
+	void Awake() {
+		Module = GetComponent<WeaponModule>();
+	}
+
+	public abstract void OnTransition(WeaponProjectile projectile);
+}

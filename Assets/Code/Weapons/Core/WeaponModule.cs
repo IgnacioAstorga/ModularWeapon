@@ -12,14 +12,14 @@ public class WeaponModule : MonoBehaviour {
 	public WeaponProjectile projectilePrefab;
 
 	private FireComponent _fireComponent;
-	//private TransitionComponent _transitionComponent;
+	private TransitionComponent _transitionComponent;
 
 	void Awake() {
 		_fireComponent = GetComponent<FireComponent>();
 		if (_fireComponent == null)
 			Debug.LogError("ERROR: No Fire Component attached to the object!");
-		//if (_transitionComponent == null)
-		//	Debug.LogError("ERROR: No Transition Component attached to the object!");
+		if (_transitionComponent == null)
+			Debug.LogError("ERROR: No Transition Component attached to the object!");
 	}
 
 	public string GetModuleName() {
@@ -47,9 +47,8 @@ public class WeaponModule : MonoBehaviour {
 		return _fireComponent.OnReleaseFire();
 	}
 
-	public WeaponProjectile FireProjectile(float elapsedTime = 0f) {
-		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
-		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(firePoint.position, firePoint.rotation);
+	public WeaponProjectile FireProjectile(Vector3 position, Quaternion rotation, float elapsedTime = 0f) {
+		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(position, rotation);
 		projectile.Modifiers = transitionModifiers;
 		projectile.NextSection = WeaponSection.NextSection;
 		if (elapsedTime > 0f)
@@ -62,6 +61,6 @@ public class WeaponModule : MonoBehaviour {
 	}
 
 	public void StartTransition(WeaponProjectile projectile) {
-		// TODO
+		_transitionComponent.OnTransition(projectile);
 	}
 }
