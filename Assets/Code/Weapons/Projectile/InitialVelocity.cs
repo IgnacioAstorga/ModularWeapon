@@ -6,6 +6,7 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 
 	public Vector3 initialVelocity = Vector3.forward;
 	public Vector3 dispersion = Vector3.zero;
+	public bool inheritVelocity = false;
 
 	private Vector3 _velocity;
 
@@ -43,6 +44,9 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 			_velocity = dispersionDeviation * _velocity;
 
 			_velocity = _transform.TransformDirection(_velocity);
+
+			if (inheritVelocity)
+				_velocity += _projectile.Weapon.Character.Velocity;
 		}
 
 		return _velocity;

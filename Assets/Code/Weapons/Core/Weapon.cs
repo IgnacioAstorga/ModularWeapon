@@ -7,6 +7,7 @@ public class TransformSequence : Sequence<Transform> { }
 
 public class Weapon : MonoBehaviour {
 
+	public CharacterController3D Character { get; private set; }
 	public int SectionCount { get { return sections.Length; } }
 	public List<WeaponProjectile> Projectiles { get; set; }
 	public Transform ModuleParent { get { return CreateModuleParent(); } }
@@ -19,6 +20,7 @@ public class Weapon : MonoBehaviour {
 	private Transform _moduleParent;
 
 	void Awake() {
+		Character = GetComponentInParent<CharacterController3D>();
 		_transform = transform;
 
 		Projectiles = new List<WeaponProjectile>();
