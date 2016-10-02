@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class SemiAutomaticWeaponModule : WeaponModule {
+public class SemiAutomaticWeaponComponent : FireComponent {
 
 	public float timeBetweenShots;
 	public int numberOfProjetiles;
@@ -35,7 +35,7 @@ public class SemiAutomaticWeaponModule : WeaponModule {
 	protected WeaponProjectile[] SemiAutomaticFire() {
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		for (int i = 0; i < numberOfProjetiles; i++)
-			projectiles.Add(FireProjectile());
+			projectiles.Add(Module.FireProjectile());
 		return projectiles.ToArray();
 	}
 }

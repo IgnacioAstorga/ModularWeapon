@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class WeaponModule : MonoBehaviour {
+public class WeaponModule : MonoBehaviour {
 
 	public WeaponSection WeaponSection { get; set; }
 
@@ -11,6 +11,17 @@ public abstract class WeaponModule : MonoBehaviour {
 	public WeaponModuleModifiers transitionModifiers;
 	public WeaponProjectile projectilePrefab;
 
+	private FireComponent _fireComponent;
+	//private TransitionComponent _transitionComponent;
+
+	void Awake() {
+		_fireComponent = GetComponent<FireComponent>();
+		if (_fireComponent == null)
+			Debug.LogError("ERROR: No Fire Component attached to the object!");
+		//if (_transitionComponent == null)
+		//	Debug.LogError("ERROR: No Transition Component attached to the object!");
+	}
+
 	public string GetModuleName() {
 		return moduleName;
 	}
@@ -18,12 +29,12 @@ public abstract class WeaponModule : MonoBehaviour {
 	public WeaponProjectile[] PressFire() {
 		if (IsPressed) {
 			TimePressed += Time.deltaTime;
-			return OnHoldFire();
+			return _fireComponent.OnHoldFire();
 		}
 		else {
 			IsPressed = true;
 			TimePressed = 0;
-			return OnPressFire();
+			return _fireComponent.OnPressFire();
 		}
 	}
 
@@ -33,14 +44,8 @@ public abstract class WeaponModule : MonoBehaviour {
 
 		IsPressed = false;
 		TimePressed = 0;
-		return OnReleaseFire();
+		return _fireComponent.OnReleaseFire();
 	}
-
-	public abstract WeaponProjectile[] OnPressFire();
-
-	public abstract WeaponProjectile[] OnHoldFire();
-
-	public abstract WeaponProjectile[] OnReleaseFire();
 
 	public WeaponProjectile FireProjectile(float elapsedTime = 0f) {
 		Transform firePoint = WeaponSection.Weapon.GetFirePoint();
@@ -57,6 +62,6 @@ public abstract class WeaponModule : MonoBehaviour {
 	}
 
 	public void StartTransition(WeaponProjectile projectile) {
-
+		// TODO
 	}
 }

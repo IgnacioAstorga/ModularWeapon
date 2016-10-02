@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class AutomaticWeaponModule : WeaponModule {
+public class AutomaticWeaponComponent : FireComponent {
 
 	public float fireRate;
 
@@ -30,7 +30,7 @@ public class AutomaticWeaponModule : WeaponModule {
 		float fireDelay = 1f / fireRate;
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		while (_timeForNextShoot <= 0) {
-			projectiles.Add(FireProjectile(-_timeForNextShoot));
+			projectiles.Add(Module.FireProjectile(-_timeForNextShoot));
 			_timeForNextShoot += fireDelay;
 		}
 		return projectiles.ToArray();
