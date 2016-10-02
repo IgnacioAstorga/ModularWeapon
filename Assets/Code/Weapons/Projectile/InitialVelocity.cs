@@ -25,8 +25,7 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 	}
 
 	public void Simulate(float timeToSimulate) {
-		Debug.Log(CalculateVelocity());
-		_transform.Translate(CalculateVelocity() * timeToSimulate);
+		_rigidbody.MovePosition(_transform.position + CalculateVelocity() * timeToSimulate);
 	}
 
 	private Vector3 CalculateVelocity() {
