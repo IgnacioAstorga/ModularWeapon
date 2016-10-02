@@ -3,12 +3,15 @@
 public class OnDestroySpawn : MonoBehaviour {
 
 	public GameObject spawnedPrefab;
+	public bool inheritSize;
 
+	private WeaponProjectile _projectile;
 	private Transform _transform;
 
 	private bool _isQuitting;
 
 	void Awake() {
+		_projectile = GetComponent<WeaponProjectile>();
 		_transform = transform;
 	}
 
@@ -21,7 +24,11 @@ public class OnDestroySpawn : MonoBehaviour {
 	}
 
 	void OnDestroy() {
-		if (!_isQuitting)
-			Instantiate(spawnedPrefab, _transform.position, _transform.rotation);
+		if (_isQuitting)
+			return;
+
+		GameObject spawned = (GameObject)Instantiate(spawnedPrefab, _transform.position, _transform.rotation);
+		if (inheritSize)
+			spawned.transform.localScale *= _projectile.GetSize();
 	}
 }

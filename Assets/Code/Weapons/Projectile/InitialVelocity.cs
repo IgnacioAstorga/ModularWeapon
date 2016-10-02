@@ -29,7 +29,7 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 
 	private Vector3 CalculateVelocity() {
 		if (_velocity == Vector3.zero) {
-			_velocity = _transform.TransformDirection(initialVelocity);
+			_velocity = initialVelocity;
 			_velocity *= _projectile.Modifiers.speedMultiplier;
 
 			Quaternion weaponDeviation = Quaternion.FromToRotation(Vector3.forward, _projectile.Modifiers.baseDirection);
@@ -41,6 +41,8 @@ public class InitialVelocity : MonoBehaviour, SimulateComponent {
 			dispersion.z = Random.Range(-dispersion.z, dispersion.z);
 			Quaternion dispersionDeviation = Quaternion.Euler(dispersion);
 			_velocity = dispersionDeviation * _velocity;
+
+			_velocity = _transform.TransformDirection(_velocity);
 		}
 
 		return _velocity;
