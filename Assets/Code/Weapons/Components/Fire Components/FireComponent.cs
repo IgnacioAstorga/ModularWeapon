@@ -3,7 +3,7 @@
 [RequireComponent(typeof(WeaponModule))]
 public abstract class FireComponent : MonoBehaviour {
 
-	public WeaponModuleModifiers fireModifiers;
+	public WeaponModuleParameters fireParameters;
 
 	protected WeaponModule Module { get; private set; }
 

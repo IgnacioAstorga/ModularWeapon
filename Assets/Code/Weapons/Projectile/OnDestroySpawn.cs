@@ -1,19 +1,11 @@
 ﻿using UnityEngine;
 
-public class OnDestroySpawn : MonoBehaviour {
+public class OnDestroySpawn : ProjectileModifier {
 
 	public GameObject spawnedPrefab;
 	public bool inheritSize;
 
-	private WeaponProjectile _projectile;
-	private Transform _transform;
-
 	private bool _isQuitting;
-
-	void Awake() {
-		_projectile = GetComponent<WeaponProjectile>();
-		_transform = transform;
-	}
 
 	void Start() {
 		_isQuitting = false;
@@ -29,6 +21,6 @@ public class OnDestroySpawn : MonoBehaviour {
 
 		GameObject spawned = (GameObject)Instantiate(spawnedPrefab, _transform.position, _transform.rotation);
 		if (inheritSize)
-			spawned.transform.localScale *= _projectile.GetSize();
+			spawned.transform.localScale *= _projectile.Size;
 	}
 }

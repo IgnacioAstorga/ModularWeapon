@@ -31,7 +31,7 @@ public class AutomaticWeaponComponent : FireComponent {
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		while (_timeForNextShoot <= 0) {
 			Transform firePoint = Module.WeaponSection.Weapon.GetFirePoint();
-			projectiles.Add(Module.FireProjectile(firePoint .position, firePoint .rotation, fireModifiers, - _timeForNextShoot));
+			projectiles.Add(Module.FireProjectile(firePoint .position, firePoint .rotation, fireParameters, - _timeForNextShoot));
 			_timeForNextShoot += fireDelay;
 		}
 		return projectiles.ToArray();

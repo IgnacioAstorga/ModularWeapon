@@ -1,37 +1,21 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(WeaponProjectile))]
-public class LifetimeDestroy : MonoBehaviour, SimulateComponent {
+public class LifetimeDestroy : ProjectileModifier {
 
-	public float duration = 1;
-
-	private float _lifeTime;
-
-	private WeaponProjectile _projectile;
-
-	void Awake() {
-		_projectile = GetComponent<WeaponProjectile>();
-	}
+	public float durationFactor = 1;
 
 	void Start() {
-		_lifeTime = 0;
+		_projectile.LifeTime = 0;
 	}
 
 	void Update() {
-		_lifeTime += Time.deltaTime;
-		if (_lifeTime >= GetTotalDuration())
+		_projectile.Duration = _projectile.Parameters.duration * durationFactor;
+		_projectile.LifeTime += Time.deltaTime;
+		if (_projectile.LifeTime >= _projectile.Duration)
 			Destroy(gameObject);
 	}
 
-	public float GetTotalDuration() {
-		return duration * _projectile.Modifiers.durationMultiplier;
-	}
-
-	public float GetRemainingTime() {
-		return GetTotalDuration() - _lifeTime;
-	}
-
-	public void Simulate(float timeToSimulate) {
-		_lifeTime += timeToSimulate;
+	public override void Simulate(float timeToSimulate) {
+		_projectile.LifeTime += timeToSimulate;
 	}
 }

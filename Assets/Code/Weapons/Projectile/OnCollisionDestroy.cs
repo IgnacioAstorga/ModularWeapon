@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class OnCollisionDestroy : MonoBehaviour {
+public class OnCollisionDestroy : ProjectileModifier {
 
 	public LayerMask collisionLayer;
 

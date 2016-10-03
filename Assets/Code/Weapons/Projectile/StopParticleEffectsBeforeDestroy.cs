@@ -1,21 +1,17 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(LifetimeDestroy))]
-public class StopParticleEffectsBeforeDestroy : MonoBehaviour {
-
-	private LifetimeDestroy _lifetime;
+public class StopParticleEffectsBeforeDestroy : ProjectileModifier {
+	
 	private ParticleSystem[] _systems;
 
 	void Awake() {
-		_lifetime = GetComponent<LifetimeDestroy>();
 		_systems = GetComponentsInChildren<ParticleSystem>();
 	}
 
 	void Update() {
-		float remainingTime = _lifetime.GetRemainingTime();
-		foreach (ParticleSystem system in _systems) {
+		float remainingTime = _projectile.Duration - _projectile.LifeTime;
+		foreach (ParticleSystem system in _systems)
 			if (remainingTime <= system.duration)
 				system.Stop();
-		}
 	}
 }

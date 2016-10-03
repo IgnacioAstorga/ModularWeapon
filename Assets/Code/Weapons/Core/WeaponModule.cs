@@ -47,9 +47,9 @@ public class WeaponModule : MonoBehaviour {
 		WeaponSection.Weapon.RegisterProjectile(_fireComponent.OnReleaseFire());
 	}
 
-	public WeaponProjectile FireProjectile(Vector3 position, Quaternion rotation, WeaponModuleModifiers modifiers, float elapsedTime = 0f) {
+	public WeaponProjectile FireProjectile(Vector3 position, Quaternion rotation, WeaponModuleParameters parameters, float elapsedTime = 0f) {
 		WeaponProjectile projectile = WeaponSection.ProjectileModule.CreateProjectile(position, rotation);
-		projectile.Modifiers = modifiers;
+		projectile.SetParameters(parameters);
 		projectile.NextSection = WeaponSection.NextSection;
 		if (elapsedTime > 0f)
 			projectile.Simulate(elapsedTime);

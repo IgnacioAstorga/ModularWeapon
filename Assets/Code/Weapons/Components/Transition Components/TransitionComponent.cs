@@ -3,7 +3,7 @@
 [RequireComponent(typeof(WeaponModule))]
 public abstract class TransitionComponent : MonoBehaviour {
 
-	public WeaponModuleModifiers transitionModifiers;
+	public WeaponModuleParameters transitionParameters;
 
 	protected WeaponModule Module { get; private set; }
 
