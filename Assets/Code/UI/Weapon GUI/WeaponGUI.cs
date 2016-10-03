@@ -17,7 +17,7 @@ public class WeaponGUI : MonoBehaviour {
 	}
 
 	public void Refresh() {
-		if (GameController.weapon.sections[0].Weapon == null)
+		if (GameController.weapon == null || GameController.weapon.sections[0].Weapon == null)
 			return;
 
 		if (_sectionGUIs != null) {
