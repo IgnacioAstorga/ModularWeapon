@@ -10,13 +10,14 @@ public class SpawnProjectileComponent : TransitionComponent {
 		Transform projectileTransform = projectile.transform;
 		
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
-		for (int i = 0; i < numberOfProjectiles; i++) {
+		for (float i = 0; i < numberOfProjectiles; i++) {
 			WeaponProjectile newProjectile = Module.FireProjectile(projectileTransform.position, projectileTransform.rotation, transitionParameters);
 			if (evenDistribution) {
-				Vector3 projectileAngle = Vector3.Lerp(-newProjectile.Parameters.dispersion, newProjectile.Parameters.dispersion, i / (float)(numberOfProjectiles - 1));
+				Vector3 projectileAngle = Vector3.Lerp(-newProjectile.Parameters.dispersion, newProjectile.Parameters.dispersion, i / (numberOfProjectiles - 1));
 				newProjectile.Parameters.dispersion = Vector3.zero;
 				newProjectile.Parameters.velocity = Quaternion.Euler(projectileAngle) * newProjectile.Parameters.velocity;
 			}
+			newProjectile.IgnoreColliders(projectile.ignoreColliders);
 			projectiles.Add(newProjectile);
 		}
 

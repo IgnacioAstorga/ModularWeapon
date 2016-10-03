@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody))]
 public class WeaponProjectile : ProjectileModifier {
@@ -16,14 +17,18 @@ public class WeaponProjectile : ProjectileModifier {
 	public bool Gravity { get; set; }
 	public float Drag { get; set; }
 
+	[HideInInspector]
+	public List<Collider> ignoreColliders = new List<Collider>();
+
 	private Vector3 _originalScale;
 	private float _timeToSimulate;
 	private bool _isQuitting;
 
 	private ProjectileModifier[] _modifiers;
+	private Collider[] _bulletColliders;
 
 	public void SetParameters(WeaponModuleParameters parameters) {
-		Parameters = parameters;
+		Parameters = new WeaponModuleParameters(parameters);
 		Velocity = Parameters.velocity;
 		Dispersion = Parameters.dispersion;
 		Duration = Parameters.duration;
@@ -34,10 +39,16 @@ public class WeaponProjectile : ProjectileModifier {
 		LifeTime = 0;
 	}
 
+	protected override void OnAwake() {
+		_bulletColliders = GetComponentsInChildren<Collider>();
+	}
+
 	void Start() {
 		_originalScale = _transform.localScale;
 		_transform.localScale = _originalScale * Size;
 		_modifiers = GetComponents<ProjectileModifier>();
+		
+		IgnoreColliders(Weapon.Character.GetComponents<Collider>());
 	}
 
 	void FixedUpdate() {
@@ -55,6 +66,16 @@ public class WeaponProjectile : ProjectileModifier {
 		// Update Rigidbody
 		_rigidbody.useGravity = Gravity;
 		_rigidbody.drag = Drag;
+	}
+
+	public void IgnoreCollider(Collider collider) {
+		foreach (Collider bulletCollider in _bulletColliders)
+			Physics.IgnoreCollision(collider, bulletCollider);
+	}
+
+	public void IgnoreColliders(IEnumerable<Collider> colliders) {
+		foreach (Collider collider in colliders)
+			IgnoreCollider(collider);
 	}
 
 	public override void Simulate(float timeToSimulate) {
