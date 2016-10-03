@@ -18,6 +18,8 @@ public class WeaponProjectile : ProjectileModifier {
 	public float Drag { get; set; }
 
 	[HideInInspector]
+	public float timeToIgnoreCollisions = 0.1f;
+	[HideInInspector]
 	public List<Collider> ignoreColliders = new List<Collider>();
 
 	private Vector3 _originalScale;
@@ -66,16 +68,24 @@ public class WeaponProjectile : ProjectileModifier {
 		// Update Rigidbody
 		_rigidbody.useGravity = Gravity;
 		_rigidbody.drag = Drag;
+
+		// Ignore collisions
+		if (LifeTime > timeToIgnoreCollisions) {
+			IgnoreColliders(ignoreColliders, false);
+			ignoreColliders.Clear();
+		}
 	}
 
-	public void IgnoreCollider(Collider collider) {
+	public void IgnoreCollider(Collider collider, bool ignore = true) {
 		foreach (Collider bulletCollider in _bulletColliders)
-			Physics.IgnoreCollision(collider, bulletCollider);
+			Physics.IgnoreCollision(collider, bulletCollider, ignore);
+		if (ignore)
+			ignoreColliders.Add(collider);
 	}
 
-	public void IgnoreColliders(IEnumerable<Collider> colliders) {
+	public void IgnoreColliders(IEnumerable<Collider> colliders, bool ignore = true) {
 		foreach (Collider collider in colliders)
-			IgnoreCollider(collider);
+			IgnoreCollider(collider, ignore);
 	}
 
 	public override void Simulate(float timeToSimulate) {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class SemiAutomaticWeaponComponent : FireComponent {
+public class SemiAutomaticFire : FireComponent {
 
 	public float timeBetweenShots;
 	public int numberOfProjetiles;
@@ -16,7 +16,7 @@ public class SemiAutomaticWeaponComponent : FireComponent {
 	public override WeaponProjectile[] OnPressFire() {
 		if (_timeSinceLastShot >= timeBetweenShots) {
 			_timeSinceLastShot = 0;
-			return SemiAutomaticFire();
+			return Fire();
 		}
 		return null;
 	}
@@ -32,7 +32,7 @@ public class SemiAutomaticWeaponComponent : FireComponent {
 		return null;
 	}
 
-	protected WeaponProjectile[] SemiAutomaticFire() {
+	protected WeaponProjectile[] Fire() {
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		for (int i = 0; i < numberOfProjetiles; i++) {
 			Transform firePoint = Module.WeaponSection.Weapon.GetFirePoint();

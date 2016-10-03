@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class AutomaticWeaponComponent : FireComponent {
+public class AutomaticFire : FireComponent {
 
 	public float fireRate;
 
@@ -14,11 +14,11 @@ public class AutomaticWeaponComponent : FireComponent {
 	public override WeaponProjectile[] OnPressFire() {
 		if (_timeForNextShoot <= 0)
 			_timeForNextShoot = 0;
-		return AutomaticFire();
+		return Fire();
 	}
 
 	public override WeaponProjectile[] OnHoldFire() {
-		return AutomaticFire();
+		return Fire();
 	}
 
 	public override WeaponProjectile[] OnReleaseFire() {
@@ -26,7 +26,7 @@ public class AutomaticWeaponComponent : FireComponent {
 		return null;
 	}
 
-	protected WeaponProjectile[] AutomaticFire() {
+	protected WeaponProjectile[] Fire() {
 		float fireDelay = 1f / fireRate;
 		List<WeaponProjectile> projectiles = new List<WeaponProjectile>();
 		while (_timeForNextShoot <= 0) {
