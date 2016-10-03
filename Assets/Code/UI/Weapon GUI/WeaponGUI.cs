@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 
 public class WeaponGUI : MonoBehaviour {
-
-	public Weapon weapon;
+	
 	public Transform sectionsObject;
 	public WeaponSectionGUI sectionGUIPrefab;
 	public WeaponModule[] availableModules;
 
 	private Transform[] _sectionGUIs;
 
+	void Awake() {
+		GameController.weaponGUI = this;
+	}
+
 	void OnEnable() {
-		if (weapon.sections[0].Weapon == null)
+		Refresh();
+	}
+
+	public void Refresh() {
+		if (GameController.weapon.sections[0].Weapon == null)
 			return;
 
 		if (_sectionGUIs != null) {
@@ -18,9 +25,9 @@ public class WeaponGUI : MonoBehaviour {
 				Destroy(section.gameObject);
 		}
 
-		_sectionGUIs = new Transform[weapon.SectionCount];
-		for (int i = 0; i < weapon.SectionCount; i++) {
-			CreateSectionGUI(weapon.sections[i], i);
+		_sectionGUIs = new Transform[GameController.weapon.SectionCount];
+		for (int i = 0; i < GameController.weapon.SectionCount; i++) {
+			CreateSectionGUI(GameController.weapon.sections[i], i);
 		}
 	}
 

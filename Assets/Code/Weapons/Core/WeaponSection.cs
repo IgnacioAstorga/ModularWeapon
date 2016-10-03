@@ -18,6 +18,14 @@ public class WeaponSection {
 	[SerializeField]
 	private WeaponModule[] upgradeModules;
 
+	public WeaponSection() { }
+
+	public WeaponSection(WeaponSection copy) : this() {
+		transitionModule = copy.transitionModule;
+		projectileModule = copy.projectileModule;
+		upgradeModules = copy.upgradeModules;
+	}
+
 	public void AssignWeapon(Weapon weapon, WeaponSection nextSection = null) {
 		Weapon = weapon;
 		NextSection = nextSection;
