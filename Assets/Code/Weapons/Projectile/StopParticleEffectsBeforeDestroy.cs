@@ -4,7 +4,7 @@ public class StopParticleEffectsBeforeDestroy : ProjectileModifier {
 	
 	private ParticleSystem[] _systems;
 
-	void Awake() {
+	protected override void OnAwake() {
 		_systems = GetComponentsInChildren<ParticleSystem>();
 	}
 
